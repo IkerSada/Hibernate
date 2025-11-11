@@ -26,3 +26,4 @@ Servers/
 # Archivos de configuración específicos
 .classpath
 .project
+/target/
