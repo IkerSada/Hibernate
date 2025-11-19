@@ -45,14 +45,35 @@ public class GertaerakSortu {
 	public static void main(String[] args) {
 		GertaerakSortu e = new GertaerakSortu();
 		System.out.println("Gertaeren sorkuntza:");
-		e.createAndStoreLoginGertaera(1L, "Anek ondo egin du logina", new Date());
-		e.createAndStoreLoginGertaera(2L, "Nerea saiatu da login egiten", new Date());
-		e.createAndStoreLoginGertaera(3L, "Kepak ondo egin du logina", new Date());
+		// e.createAndStoreLoginGertaera(1L,"Anek ondo egin du logina", new Date());
+		// e.createAndStoreLoginGertaera(2L,"Nerea saiatu da login egiten", new Date());
+		// e.createAndStoreLoginGertaera(3L,"Kepak ondo egin du logina", new Date());
+		 e.createAndStoreLoginGertaera("Anek ondo egin du logina", new Date());
+		 e.createAndStoreLoginGertaera("Nerea saiatu da login egiten", new Date());
+		 e.createAndStoreLoginGertaera("Kepak ondo egin du logina", new Date());
 		System.out.println("Gertaeren zerrenda:");
 		List<LoginGertaera> gertaerak = e.gertaerakZerrendatu();
 		for (LoginGertaera g : gertaerak) {
 			System.out.println("Id: " + g.getId() + " Deskribapena: " +
 					g.getDeskribapena() + " Data: " + g.getData());
+		}
+	}
+	private void createAndStoreLoginGertaera(String deskribapena, Date data) {
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			em.getTransaction().begin();
+			LoginGertaera e = new LoginGertaera();
+			e.setDeskribapena(deskribapena);
+			e.setData(data);
+			em.persist(e);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
+			throw e;
+		} finally {
+			em.close();
 		}
 	}
 }
